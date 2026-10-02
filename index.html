@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DPTV 802 Movement Screen Random Case Practice</title>
+<style>
+:root{--navy:#1f4e79;--blue:#d9eaf7;--green:#5e7d3b;--greenbg:#eef5e9;--gold:#8a6500;--goldbg:#fff4cc;--ink:#1d2733;--muted:#5c6773;--line:#ccd6df;--paper:#ffffff;--bg:#f3f6f8;}
+*{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+header{background:var(--navy);color:#fff;padding:22px 18px} header h1{margin:0 0 4px;font-size:1.6rem} header p{margin:0;opacity:.95}
+main{max-width:1000px;margin:18px auto;padding:0 16px 40px} .panel{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.instructions{background:#eef5fa;border-left:5px solid var(--navy)} .rule{background:var(--goldbg);border-left:5px solid var(--gold)}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center} button{font:inherit;font-weight:700;border-radius:8px;border:1px solid #244f73;padding:10px 14px;background:var(--navy);color:#fff;cursor:pointer} button.secondary{background:#fff;color:var(--navy)} button.green{background:var(--green);border-color:var(--green)} button:focus{outline:3px solid #88b9df;outline-offset:2px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid{grid-template-columns:1fr}}
+.case-card{border:2px solid var(--navy);border-radius:12px;overflow:hidden;background:#fff} .case-head{background:var(--blue);padding:12px 14px} .case-head h2{margin:0;font-size:1.2rem;color:var(--navy)} .case-body{padding:14px}
+.label{font-weight:700;color:var(--muted);font-size:.86rem;text-transform:uppercase;letter-spacing:.04em;margin-top:10px} .condition{font-size:1.35rem;font-weight:800;margin:4px 0 8px} .report{font-style:italic;background:#f7f8fa;padding:9px;border-radius:7px;margin:8px 0}
+.hiddenBox{display:none;margin-top:10px;padding:12px;border-radius:8px;background:var(--greenbg);border:1px solid #b9cca5} .debrief{background:#eef5fa;border-color:#b8d2e5} .patient{background:#f0f6eb;border-color:#bfd3aa}
+.small{font-size:.92rem;color:var(--muted)} .badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#e8eef5;color:#284e6b;font-size:.8rem;font-weight:700;margin-bottom:8px}
+ul.check{margin:8px 0 0 18px} footer{font-size:.83rem;color:var(--muted);margin-top:16px}
+@media print{body{background:#fff} header{background:#fff;color:#000;border-bottom:2px solid #000} .controls, .revealButtons{display:none} .panel{box-shadow:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1>DPTV 802 • Movement Screen Random Case Practice</h1>
+  <p>Generate two different cases for a pair. Choose one clinically relevant movement, observe, reason, and document.</p>
+</header>
+<main>
+<section class="panel instructions">
+  <strong>Before using the randomizer:</strong> complete the full movement-menu portion of the student worksheet. Then generate a pair of cases.
+  <ul class="check">
+    <li>The clinician reads only the condition and patient report.</li>
+    <li>The clinician looks away while the patient partner reveals and reads the acting cue.</li>
+    <li>Perform <strong>one relevant movement</strong>, not the entire screen.</li>
+    <li>On the worksheet answer: why this movement, two objective observations, plausible contributors, what to examine next, and ICF.</li>
+    <li>Reveal the debrief only after the attempt is complete.</li>
+  </ul>
+</section>
+<section class="panel rule"><strong>Practical rule:</strong> Relevance matters. A movement screen should be clinically tied to the condition and should produce objective observations that guide the next examination decision.</section>
+<section class="panel controls">
+  <button type="button" class="secondary" onclick="downloadActivity()">Download this HTML activity</button>
+  <button id="generate">Generate new pair</button>
+  <button class="secondary" id="reset">Hide cues & debriefs</button>
+  <span class="small">The two students will always receive different cases.</span>
+</section>
+<div class="grid">
+  <section class="case-card" aria-labelledby="aTitle">
+    <div class="case-head"><h2 id="aTitle">Student A = Clinician</h2></div>
+    <div class="case-body" id="caseA"></div>
+  </section>
+  <section class="case-card" aria-labelledby="bTitle">
+    <div class="case-head"><h2 id="bTitle">Student B = Clinician</h2></div>
+    <div class="case-body" id="caseB"></div>
+  </section>
+</div>
+<footer>Case bank: 24 instructional cases. Wrist sprain and ankle sprain are verified examples from DPTV 802 Practical 1 planning; the remaining cases broaden practice across the movement-screen domains.</footer>
+</main>
+<script>
+const cases = [{"id": 1, "condition": "Right lateral ankle sprain", "report": "", "cue": "Favor the right ankle during weight-bearing. During walking, shorten time on the right leg. On a step, use the rail lightly and move more cautiously.", "choices": "Walking or step up/down are reasonable choices.", "observations": "Possible findings: reduced right stance time, shorter step length, slower pace, increased use of support, asymmetric loading."}, {"id": 2, "condition": "Left lateral ankle sprain", "report": "", "cue": "Favor the left ankle during weight-bearing. During walking, shorten time on the left leg. On a step, use the rail lightly and move more cautiously.", "choices": "Walking or step up/down are reasonable choices.", "observations": "Possible findings: reduced left stance time, shorter step length, slower pace, increased use of support, asymmetric loading."}, {"id": 3, "condition": "Right wrist sprain", "report": "", "cue": "Protect the right wrist. Avoid pushing through the right hand and use the left hand more for grasping or manipulating an object.", "choices": "Grasp/release or manipulating a small object are strong choices; reaching may also be relevant depending on the task.", "observations": "Possible findings: reduced use of the right hand, altered grip, slower manipulation, guarding, use of the opposite hand."}, {"id": 4, "condition": "Left wrist sprain", "report": "", "cue": "Protect the left wrist. Avoid pushing through the left hand and use the right hand more for grasping or manipulating an object.", "choices": "Grasp/release or manipulating a small object are strong choices; reaching may also be relevant depending on the task.", "observations": "Possible findings: reduced use of the left hand, altered grip, slower manipulation, guarding, use of the opposite hand."}, {"id": 5, "condition": "Right shoulder pain", "report": "", "cue": "When asked to reach overhead, stop somewhat early and allow a mild shoulder shrug or trunk lean. Keep the motion safe and comfortable.", "choices": "Overhead reach is a strong choice; hands behind head/behind back may also be appropriate.", "observations": "Possible findings: reduced right arm excursion, shoulder shrug, trunk compensation, slower movement, guarding."}, {"id": 6, "condition": "Left shoulder pain", "report": "", "cue": "When asked to reach overhead, stop somewhat early and allow a mild shoulder shrug or trunk lean. Keep the motion safe and comfortable.", "choices": "Overhead reach is a strong choice; hands behind head/behind back may also be appropriate.", "observations": "Possible findings: reduced left arm excursion, shoulder shrug, trunk compensation, slower movement, guarding."}, {"id": 7, "condition": "Right elbow pain after lifting", "report": "", "cue": "Keep the right elbow slightly flexed during reaching and use the left arm more for the task. Do not force pain.", "choices": "Reaching or grasp/release can be reasonable depending on the task selected.", "observations": "Possible findings: incomplete elbow excursion, slower reach, guarding, increased use of the opposite arm."}, {"id": 8, "condition": "Left elbow pain after lifting", "report": "", "cue": "Keep the left elbow slightly flexed during reaching and use the right arm more for the task. Do not force pain.", "choices": "Reaching or grasp/release can be reasonable depending on the task selected.", "observations": "Possible findings: incomplete elbow excursion, slower reach, guarding, increased use of the opposite arm."}, {"id": 9, "condition": "Right knee pain after a twisting injury", "report": "", "cue": "During sit-to-stand or a step, keep the right knee slightly less flexed and shift more weight to the left side. Move cautiously.", "choices": "Sit-to-stand or step up/down are strong choices.", "observations": "Possible findings: asymmetric loading, reduced right knee excursion, use of arms/support, slower speed, guarded strategy."}, {"id": 10, "condition": "Left knee pain after a twisting injury", "report": "", "cue": "During sit-to-stand or a step, keep the left knee slightly less flexed and shift more weight to the right side. Move cautiously.", "choices": "Sit-to-stand or step up/down are strong choices.", "observations": "Possible findings: asymmetric loading, reduced left knee excursion, use of arms/support, slower speed, guarded strategy."}, {"id": 11, "condition": "Right hip pain", "report": "", "cue": "During sit-to-stand or walking, reduce loading on the right side and take a slightly shorter step with the left so the right stance phase is brief.", "choices": "Sit-to-stand or walking are strong choices.", "observations": "Possible findings: weight shift away from right, shorter stance time, trunk shift, slower pace, guarding."}, {"id": 12, "condition": "Left hip pain", "report": "", "cue": "During sit-to-stand or walking, reduce loading on the left side and take a slightly shorter step with the right so the left stance phase is brief.", "choices": "Sit-to-stand or walking are strong choices.", "observations": "Possible findings: weight shift away from left, shorter stance time, trunk shift, slower pace, guarding."}, {"id": 13, "condition": "Right thumb sprain", "report": "", "cue": "Use the right fingers but minimize thumb contribution when holding or manipulating the object. Let the grip look awkward but safe.", "choices": "Grasp/release or manipulating a small object are strong choices.", "observations": "Possible findings: altered grip pattern, slower manipulation, reduced precision, use of opposite hand."}, {"id": 14, "condition": "Left thumb sprain", "report": "", "cue": "Use the left fingers but minimize thumb contribution when holding or manipulating the object. Let the grip look awkward but safe.", "choices": "Grasp/release or manipulating a small object are strong choices.", "observations": "Possible findings: altered grip pattern, slower manipulation, reduced precision, use of opposite hand."}, {"id": 15, "condition": "Right foot pain after prolonged walking", "report": "", "cue": "During walking, shorten right stance time and reduce push-off. Keep the pace mildly slower but stable.", "choices": "Walking is the strongest choice; a step may also be relevant.", "observations": "Possible findings: shortened right stance, reduced push-off, shorter contralateral step, slower pace."}, {"id": 16, "condition": "Left foot pain after prolonged walking", "report": "", "cue": "During walking, shorten left stance time and reduce push-off. Keep the pace mildly slower but stable.", "choices": "Walking is the strongest choice; a step may also be relevant.", "observations": "Possible findings: shortened left stance, reduced push-off, shorter contralateral step, slower pace."}, {"id": 17, "condition": "Right Achilles region pain", "report": "", "cue": "During walking, reduce push-off on the right and move a little more slowly. On a step, use support lightly if available.", "choices": "Walking or step up/down are reasonable choices.", "observations": "Possible findings: reduced right push-off, shortened left step, slower speed, cautious step strategy."}, {"id": 18, "condition": "Left Achilles region pain", "report": "", "cue": "During walking, reduce push-off on the left and move a little more slowly. On a step, use support lightly if available.", "choices": "Walking or step up/down are reasonable choices.", "observations": "Possible findings: reduced left push-off, shortened right step, slower speed, cautious step strategy."}, {"id": 19, "condition": "Low back pain", "report": "“I have the most trouble getting out of low chairs.”", "cue": "During sit-to-stand, use both hands, lean the trunk forward more than usual, and require two attempts before standing.", "choices": "Sit-to-stand is the most directly relevant choice.", "observations": "Possible findings: bilateral UE push-off, increased forward trunk lean, two attempts, slower speed, guarded strategy."}, {"id": 20, "condition": "Low back pain", "report": "“Bending to pick things up from the floor is difficult.”", "cue": "During floor retrieval, use a wider base of support, place one hand on the thigh, and limit trunk/knee excursion somewhat.", "choices": "Floor retrieval is the most directly relevant choice.", "observations": "Possible findings: wide BOS, hand support, altered trunk/knee excursion, slower strategy, guarding."}, {"id": 21, "condition": "Neck pain", "report": "“Checking the blind spot to my right while driving is difficult.”", "cue": "When asked to rotate the head right, limit the head turn and rotate the upper trunk slightly instead. Left rotation can look more typical.", "choices": "Head rotation left/right is the most directly relevant choice.", "observations": "Possible findings: reduced right cervical rotation, trunk substitution, asymmetry, slower/guarded movement."}, {"id": 22, "condition": "Neck pain", "report": "“Checking the blind spot to my left while driving is difficult.”", "cue": "When asked to rotate the head left, limit the head turn and rotate the upper trunk slightly instead. Right rotation can look more typical.", "choices": "Head rotation left/right is the most directly relevant choice.", "observations": "Possible findings: reduced left cervical rotation, trunk substitution, asymmetry, slower/guarded movement."}, {"id": 23, "condition": "Thoracic/trunk pain", "report": "“Reaching to a high shelf bothers me.”", "cue": "During overhead reach, limit the arm/trunk excursion somewhat and use a small compensatory trunk lean. Keep the task safe.", "choices": "Overhead reach is a reasonable movement-screen choice because it reproduces the reported activity.", "observations": "Possible findings: reduced reach height, trunk substitution, slower movement, guarding, asymmetry."}, {"id": 24, "condition": "Trunk stiffness", "report": "“Rolling in bed is the hardest movement for me.”", "cue": "During rolling, move the trunk and pelvis more as one unit, use the arms more, and complete the roll slowly.", "choices": "Rolling is the most directly relevant choice.", "observations": "Possible findings: slower rolling, en bloc strategy, increased UE use, reduced segmental movement."}];
+let currentA=null, currentB=null;
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function cardHTML(c, key){
+  const report = c.report ? `<div class="label">Patient report</div><div class="report">${esc(c.report)}</div>` : `<div class="small">No additional patient report is provided. Select the movement from the condition and body region.</div>`;
+  return `
+    <div class="badge">Case ${c.id}</div>
+    <div class="label">Condition</div><div class="condition">${esc(c.condition)}</div>
+    ${report}
+    <div class="revealButtons controls" style="margin-top:12px">
+      <button class="green" type="button" onclick="toggle('patient${key}')">Reveal patient acting cue</button>
+      <button class="secondary" type="button" onclick="toggle('debrief${key}')">Reveal debrief after attempt</button>
+    </div>
+    <div id="patient${key}" class="hiddenBox patient"><div class="label">Patient partner only</div>${esc(c.cue)}</div>
+    <div id="debrief${key}" class="hiddenBox debrief"><div class="label">Debrief — one reasonable approach</div><p><strong>Movement choice:</strong> ${esc(c.choices)}</p><p><strong>Possible objective observations:</strong> ${esc(c.observations)}</p><p class="small">Other movement choices may also be defensible if the student clearly connects them to the condition/request.</p></div>`;
+}
+function randIndex(max){return Math.floor(Math.random()*max);}
+function generatePair(){
+  let i=randIndex(cases.length), j=randIndex(cases.length);
+  while(j===i) j=randIndex(cases.length);
+  currentA=cases[i]; currentB=cases[j];
+  document.getElementById('caseA').innerHTML=cardHTML(currentA,'A');
+  document.getElementById('caseB').innerHTML=cardHTML(currentB,'B');
+}
+function toggle(id){const el=document.getElementById(id); if(!el)return; el.style.display=(el.style.display==='block'?'none':'block');}
+function hideAll(){document.querySelectorAll('.hiddenBox').forEach(el=>el.style.display='none');}
+document.getElementById('generate').addEventListener('click',generatePair);
+document.getElementById('reset').addEventListener('click',hideAll);
+generatePair();
+
+function downloadActivity(){
+  const source = "<!doctype html>\n" + document.documentElement.outerHTML;
+  const blob = new Blob([source], {type:"text/html;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "DPTV802_Movement_Screen_Random_Case_Practice.html";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+}
+
+</script>
+</body>
+</html>
